@@ -18,9 +18,9 @@ function App() {
 
   const handleSend = () => {
     const newMessage = {
-      position: "left",
+      position: "right", // Assuming you want the sent message to appear on the right
       type: "text",
-      title: "Kursat",
+      title: "User", // Replace with the user's name if available
       text: inputText,
     };
 
@@ -28,31 +28,37 @@ function App() {
     setInputText('');
   };
 
+  const inputHeight = 60; // Adjust the height to match your TextField and Button size
+
   return (
-    <div className="App">
+    <div className="App" style={{ paddingBottom: `${inputHeight}px` }}>
       <ButtonAppBar />
       <AlignItemsList />
-      <MessageList
-        className='message-list'
-        lockable={true}
-        toBottomHeight={'40%'}
-        dataSource={messages}
-      />
-      <Grid container spacing={2} alignItems="center" className="message-input">
-        <Grid item xs>
-          <TextField
-            id="outlined-basic"
-            label="Type a message"
-            variant="outlined"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            fullWidth
-          />
+      <div style={{ overflowY: 'auto', height: `calc(100vh - ${inputHeight}px - /* height of ButtonAppBar */)` }}>
+        <MessageList
+          className='message-list'
+          lockable={true}
+          toBottomHeight={'100%'}
+          dataSource={messages}
+        />
+      </div>
+      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, height: `${inputHeight}px`, background: '#fff', borderTop: '1px solid #ccc' }}>
+        <Grid container spacing={0} alignItems="center" className="message-input">
+          <Grid item xs>
+            <TextField
+              id="outlined-basic"
+              label="Type a message"
+              variant="outlined"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item>
+            <Button variant="contained" onClick={handleSend}>Send</Button>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Button variant="contained" onClick={handleSend}>Send</Button>
-        </Grid>
-      </Grid>
+      </div>
     </div>
   );
 }
